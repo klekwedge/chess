@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import "../../index.css";
 import Square from "../Square/Square";
 
@@ -26,6 +27,8 @@ export default function Board(props) {
     board.push(<div className="board-row">{squareRows}</div>);
   }
 
+  // console.log(board);
+  // // key={uuidv4()}
   return <div>{board}</div>;
 }
 

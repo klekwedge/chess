@@ -1,160 +1,144 @@
-import React from "react";
 import "../../index.css";
 import Board from "../Board/Board";
 import FallenSoldierBlock from "../FallenSoldiers/FallenSoldiers";
 import initialiseChessBoard from "../../helpers/initialiseChessBoard";
+import { useState } from "react";
 
-export default class Game extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      squares: initialiseChessBoard(),
-      whiteFallenSoldiers: [],
-      blackFallenSoldiers: [],
-      player: 1,
-      sourceSelection: -1,
-      status: "",
-      turn: "white",
-    };
-  }
+export default function Game() {
+  const [whiteFallenSoldiers, setWhiteFallenSoldiers] = useState([]);
+  const [blackFallenSoldiers, setBlackFallenSoldiers] = useState([]);
+  const [player, setPlayer] = useState(1);
+  const [status, setStatus] = useState("");
+  const [turn, setTurn] = useState("white");
+  const [sourceSelection, setSourceSelection] = useState(-1);
+  const [squares, setSquares] = useState(initialiseChessBoard());
 
-  handleClick(i) {
-    const squares = this.state.squares.slice();
+  const handleClick = (i: any) => {
+    const squaresBuff = squares.slice();
 
-    if (this.state.sourceSelection === -1) {
-      if (!squares[i] || squares[i].player !== this.state.player) {
-        this.setState({
-          status:
-            "Wrong selection. Choose player " + this.state.player + " pieces.",
-        });
-        squares[i] ? delete squares[i].style.backgroundColor : null;
+    if (sourceSelection === -1) {
+      if (!squaresBuff[i] || squaresBuff[i].player !== player) {
+        setStatus("Wrong selection. Choose player " + player + " pieces.");
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        squaresBuff[i] ? delete squaresBuff[i].style.backgroundColor : null;
       } else {
-        squares[i].style = {
-          ...squares[i].style,
+        squaresBuff[i].style = {
+          ...squaresBuff[i].style,
           backgroundColor: "RGB(111,143,114)",
         }; // Emerald from http://omgchess.blogspot.com/2015/09/chess-board-color-schemes.html
-        this.setState({
-          status: "Choose destination for the selected piece",
-          sourceSelection: i,
-        });
+        setStatus("Choose destination for the selected piece");
+        setSourceSelection(i);
       }
-    } else if (this.state.sourceSelection > -1) {
-      delete squares[this.state.sourceSelection].style.backgroundColor;
-      if (squares[i] && squares[i].player === this.state.player) {
-        this.setState({
-          status: "Wrong selection. Choose valid source and destination again.",
-          sourceSelection: -1,
-        });
+    } else if (sourceSelection > -1) {
+      delete squaresBuff[sourceSelection].style.backgroundColor;
+      if (squaresBuff[i] && squaresBuff[i].player === player) {
+        setStatus(
+          "Wrong selection. Choose valid source and destination again."
+        );
+        setSourceSelection(-1);
       } else {
-        const squares = this.state.squares.slice();
-        const whiteFallenSoldiers = this.state.whiteFallenSoldiers.slice();
-        const blackFallenSoldiers = this.state.blackFallenSoldiers.slice();
-        const isDestEnemyOccupied = squares[i] ? true : false;
-        const isMovePossible = squares[
-          this.state.sourceSelection
-        ].isMovePossible(this.state.sourceSelection, i, isDestEnemyOccupied);
-        const srcToDestPath = squares[
-          this.state.sourceSelection
-        ].getSrcToDestPath(this.state.sourceSelection, i);
-        const isMoveLegal = this.isMoveLegal(srcToDestPath);
+        const squaresBuff = squares.slice();
+        const whiteFallenSoldiersBuff = whiteFallenSoldiers.slice();
+        const blackFallenSoldiersBuff = blackFallenSoldiers.slice();
+        const isDestEnemyOccupiedBuff = squaresBuff[i] ? true : false;
+        const isMovePossible = squaresBuff[sourceSelection].isMovePossible(
+          sourceSelection,
+          i,
+          isDestEnemyOccupiedBuff
+        );
+        const srcToDestPath = squaresBuff[sourceSelection].getSrcToDestPath(
+          sourceSelection,
+          i
+        );
+        const isMoveLegalBuff = isMoveLegal(srcToDestPath);
 
-        if (isMovePossible && isMoveLegal) {
-          if (squares[i] !== null) {
-            if (squares[i].player === 1) {
-              whiteFallenSoldiers.push(squares[i]);
-            } else {
-              blackFallenSoldiers.push(squares[i]);
-            }
-          }
-          console.log("whiteFallenSoldiers", whiteFallenSoldiers);
-          console.log("blackFallenSoldiers", blackFallenSoldiers);
-          squares[i] = squares[this.state.sourceSelection];
-          squares[this.state.sourceSelection] = null;
-          let player = this.state.player === 1 ? 2 : 1;
-          let turn = this.state.turn === "white" ? "black" : "white";
-          this.setState({
-            sourceSelection: -1,
-            squares: squares,
-            whiteFallenSoldiers: whiteFallenSoldiers,
-            blackFallenSoldiers: blackFallenSoldiers,
-            player: player,
-            status: "",
-            turn: turn,
-          });
+        if (isMovePossible && isMoveLegalBuff) {
+          // ! Error
+          // if (squaresBuff[i] !== null) {
+          //   if (squaresBuff[i].player === 1) {
+          //     whiteFallenSoldiers.push(squaresBuff[i]);
+          //   } else {
+          //     blackFallenSoldiers.push(squaresBuff[i]);
+          //   }
+          // }
+          console.log("whiteFallenSoldiers", whiteFallenSoldiersBuff);
+          console.log("blackFallenSoldiers", blackFallenSoldiersBuff);
+          squaresBuff[i] = squaresBuff[sourceSelection];
+          squaresBuff[sourceSelection] = null;
+          let playerBuff = player === 1 ? 2 : 1;
+          let turnBuff = turn === "white" ? "black" : "white";
+
+          setStatus("");
+          setSourceSelection(-1);
+          setSquares(squaresBuff);
+          setPlayer(playerBuff);
+          setTurn(turnBuff);
+
+          setWhiteFallenSoldiers(whiteFallenSoldiersBuff);
+          setBlackFallenSoldiers(blackFallenSoldiersBuff);
         } else {
-          this.setState({
-            status:
-              "Wrong selection. Choose valid source and destination again.",
-            sourceSelection: -1,
-          });
+          setStatus(
+            "Wrong selection. Choose valid source and destination again."
+          );
+          setSourceSelection(-1);
         }
       }
     }
-  }
+  };
 
   /**
    * Check all path indices are null. For one steps move of pawn/others or jumping moves of knight array is empty, so  move is legal.
    * @param  {[type]}  srcToDestPath [array of board indices comprising path between src and dest ]
    * @return {Boolean}
    */
-  isMoveLegal(srcToDestPath) {
+  const isMoveLegal = (srcToDestPath: any) => {
     let isLegal = true;
     for (let i = 0; i < srcToDestPath.length; i++) {
-      if (this.state.squares[srcToDestPath[i]] !== null) {
+      if (squares[srcToDestPath[i]] !== null) {
         isLegal = false;
       }
     }
     return isLegal;
-  }
+  };
 
-  render() {
-    return (
-      <div>
-        <div className="game">
-          <div className="game-board">
-            <Board
-              squares={this.state.squares}
-              onClick={(i) => this.handleClick(i)}
-            />
-          </div>
-          <div className="game-info">
-            <h3>Turn</h3>
-            <div
-              id="player-turn-box"
-              style={{ backgroundColor: this.state.turn }}
-            ></div>
-            <div className="game-status">{this.state.status}</div>
-
-            <div className="fallen-soldier-block">
-              {
-                <FallenSoldierBlock
-                  whiteFallenSoldiers={this.state.whiteFallenSoldiers}
-                  blackFallenSoldiers={this.state.blackFallenSoldiers}
-                />
-              }
-            </div>
-          </div>
+  return (
+    <div>
+      <div className="game">
+        <div className="game-board">
+          <Board squares={squares} onClick={(i: any) => handleClick(i)} />
         </div>
+        <div className="game-info">
+          <h3>Turn</h3>
+          <div id="player-turn-box" style={{ backgroundColor: turn }}></div>
+          <div className="game-status">{status}</div>
 
-        <div className="icons-attribution">
-          <div>
-            {" "}
-            <small>
-              {" "}
-              Chess Icons And Favicon (extracted) By en:User:Cburnett [
-              <a href="http://www.gnu.org/copyleft/fdl.html">GFDL</a>,{" "}
-              <a href="http://creativecommons.org/licenses/by-sa/3.0/">
-                CC-BY-SA-3.0
-              </a>
-              , <a href="http://opensource.org/licenses/bsd-license.php">BSD</a>{" "}
-              or <a href="http://www.gnu.org/licenses/gpl.html">GPL</a>],{" "}
-              <a href="https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces">
-                via Wikimedia Commons
-              </a>{" "}
-            </small>
+          <div className="fallen-soldier-block">
+            {
+              <FallenSoldierBlock
+                whiteFallenSoldiers={whiteFallenSoldiers}
+                blackFallenSoldiers={blackFallenSoldiers}
+              />
+            }
           </div>
         </div>
       </div>
-    );
-  }
+
+      <div className="icons-attribution">
+        <div>
+          <small>
+            Chess Icons And Favicon (extracted) By en:User:Cburnett [
+            <a href="http://www.gnu.org/copyleft/fdl.html">GFDL</a>,{" "}
+            <a href="http://creativecommons.org/licenses/by-sa/3.0/">
+              CC-BY-SA-3.0
+            </a>
+            , <a href="http://opensource.org/licenses/bsd-license.php">BSD</a>{" "}
+            or <a href="http://www.gnu.org/licenses/gpl.html">GPL</a>],{" "}
+            <a href="https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces">
+              via Wikimedia Commons
+            </a>{" "}
+          </small>
+        </div>
+      </div>
+    </div>
+  );
 }
