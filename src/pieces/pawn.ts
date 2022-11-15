@@ -1,7 +1,8 @@
 import Piece from "./figure";
 
 export default class Pawn extends Piece {
-  constructor(player) {
+  initialPositions: { 1: number[]; 2: number[]; };
+  constructor(player: number) {
     super(
       player,
       player === 1
@@ -14,7 +15,7 @@ export default class Pawn extends Piece {
     };
   }
 
-  isMovePossible(src, dest, isDestEnemyOccupied) {
+  isMovePossible(src: number, dest: number, isDestEnemyOccupied: boolean) {
     if (this.player === 1) {
       if (
         (dest === src - 8 && !isDestEnemyOccupied) ||
@@ -43,7 +44,7 @@ export default class Pawn extends Piece {
     return false;
   }
 
-  getSrcToDestPath(src, dest) {
+  getSrcToDestPath(src: number, dest: number) {
     if (dest === src - 16) {
       return [src - 8];
     } else if (dest === src + 16) {

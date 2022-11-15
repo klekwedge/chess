@@ -4,6 +4,7 @@ interface IBasicFigure {
   player: number;
   style: any;
   id: string;
+  initialPositions?: boolean
 }
 
 export default class BasicFigure implements IBasicFigure {
