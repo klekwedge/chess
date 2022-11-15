@@ -1,7 +1,7 @@
-import Piece from "./figure";
+import BasicFigure from "./figure";
 
-export default class Bishop extends Piece {
-  constructor(player) {
+export default class Bishop extends BasicFigure {
+  constructor(player: number) {
     super(
       player,
       player === 1
@@ -10,11 +10,11 @@ export default class Bishop extends Piece {
     );
   }
 
-  isMovePossible(src, dest) {
+  isMovePossible(src: number, dest: number) {
     return Math.abs(src - dest) % 9 === 0 || Math.abs(src - dest) % 7 === 0;
   }
 
-  getSrcToDestPath(src, dest) {
+  getSrcToDestPath(src: number, dest: number) {
     let path = [],
       pathStart,
       pathEnd,
