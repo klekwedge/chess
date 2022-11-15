@@ -1,7 +1,7 @@
 import Piece from "./figure";
 
 export default class Knight extends Piece {
-  constructor(player) {
+  constructor(player: number) {
     super(
       player,
       player === 1
@@ -10,7 +10,7 @@ export default class Knight extends Piece {
     );
   }
 
-  isMovePossible(src, dest) {
+  isMovePossible(src: number, dest: number) {
     return (
       src - 17 === dest ||
       src - 10 === dest ||
