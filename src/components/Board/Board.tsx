@@ -2,14 +2,19 @@ import { v4 as uuidv4 } from "uuid";
 import "../../index.css";
 import Square from "../Square/Square";
 
-export default function Board(props) {
-  const renderSquare = (i, squareShade) => {
+export default function Board({ squares, onClick }: any) {
+  const isEven = (num: number) => {
+    return num % 2 === 0;
+  };
+
+  const renderSquare = (i: number, squareShade: string): JSX.Element => {
     return (
       <Square
-        piece={props.squares[i]}
-        style={props.squares[i] ? props.squares[i].style : null}
+        piece={squares[i]}
+        style={squares[i] ? squares[i].style : null}
         shade={squareShade}
-        onClick={() => props.onClick(i)}
+        onClick={() => onClick(i)}
+        key={uuidv4()}
       />
     );
   };
@@ -24,14 +29,8 @@ export default function Board(props) {
           : "dark-square";
       squareRows.push(renderSquare(i * 8 + j, squareShade));
     }
-    board.push(<div className="board-row">{squareRows}</div>);
+    board.push(<li key={uuidv4()} className="board-row">{squareRows}</li>);
   }
 
-  // console.log(board);
-  // // key={uuidv4()}
-  return <div>{board}</div>;
-}
-
-function isEven(num) {
-  return num % 2 == 0;
+  return <ul>{board}</ul>;
 }
