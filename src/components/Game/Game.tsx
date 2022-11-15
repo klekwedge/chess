@@ -1,5 +1,5 @@
 import React from "react";
-import "../index.css";
+import "../../index.css";
 import Board from "../Board/Board";
 import FallenSoldierBlock from "../FallenSoldiers/FallenSoldiers";
 import initialiseChessBoard from "../../helpers/initialiseChessBoard";

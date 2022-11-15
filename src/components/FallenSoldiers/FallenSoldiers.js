@@ -1,6 +1,6 @@
 import React from "react";
-import "../index.css";
-import Square from "./square.js";
+import "../../index.css";
+import Square from "../Square/Square";
 
 export default class FallenSoldierBlock extends React.Component {
   renderSquare(square, i, squareShade) {
