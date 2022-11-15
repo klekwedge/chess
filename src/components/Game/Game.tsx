@@ -13,31 +13,41 @@ export default function Game() {
   const [sourceSelection, setSourceSelection] = useState(-1);
   const [squares, setSquares] = useState(initialiseChessBoard());
 
-  const handleClick = (i: any) => {
+  /**
+   * Check all path indices are null. For one steps move of pawn/others or jumping moves of knight array is empty, so  move is legal.
+   * @param  {[type]}  srcToDestPath [array of board indices comprising path between src and dest ]
+   * @return {Boolean}
+   */
+  const isMoveLegal = (srcToDestPath: any) => {
+    let isLegal = true;
+    for (let i = 0; i < srcToDestPath.length; i++) {
+      if (squares[srcToDestPath[i]] !== null) {
+        isLegal = false;
+      }
+    }
+    return isLegal;
+  };
+
+  const handleClick = (i: number) => {
     const squaresBuff = squares.slice();
 
     if (sourceSelection === -1) {
       if (!squaresBuff[i] || squaresBuff[i].player !== player) {
         setStatus(`Wrong selection. Now the player ${player} is walking`);
-        console.log(squaresBuff[i]);
-
-        // setSquares([...squares.filter((square) => square.id !== squaresBuff[i])]);
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        // ! squaresBuff[i] ? delete squaresBuff[i].style.backgroundColor : null;
       } else {
         squaresBuff[i].style = {
           ...squaresBuff[i].style,
           backgroundColor: "RGB(111,143,114)",
-        }; // Emerald from http://omgchess.blogspot.com/2015/09/chess-board-color-schemes.html
+        };
+
+        // Emerald from http://omgchess.blogspot.com/2015/09/chess-board-color-schemes.html
         setStatus("Choose where you want to go");
         setSourceSelection(i);
       }
     } else if (sourceSelection > -1) {
       // ! delete squaresBuff[sourceSelection].style.backgroundColor;
       if (squaresBuff[i] && squaresBuff[i].player === player) {
-        setStatus(
-          "Wrong choice. You can't make such a move."
-        );
+        setStatus("Wrong choice. You can't make such a move.");
         setSourceSelection(-1);
       } else {
         const squaresBuff = squares.slice();
@@ -88,26 +98,11 @@ export default function Game() {
     }
   };
 
-  /**
-   * Check all path indices are null. For one steps move of pawn/others or jumping moves of knight array is empty, so  move is legal.
-   * @param  {[type]}  srcToDestPath [array of board indices comprising path between src and dest ]
-   * @return {Boolean}
-   */
-  const isMoveLegal = (srcToDestPath: any) => {
-    let isLegal = true;
-    for (let i = 0; i < srcToDestPath.length; i++) {
-      if (squares[srcToDestPath[i]] !== null) {
-        isLegal = false;
-      }
-    }
-    return isLegal;
-  };
-
   return (
     <div>
       <div className="game">
         <div className="game-board">
-          <Board squares={squares} onClick={(i: any) => handleClick(i)} />
+          <Board squares={squares} onClick={(i: number) => handleClick(i)} />
         </div>
         <div className="game-info">
           <h3>Turn</h3>
