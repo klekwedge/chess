@@ -18,22 +18,25 @@ export default function Game() {
 
     if (sourceSelection === -1) {
       if (!squaresBuff[i] || squaresBuff[i].player !== player) {
-        setStatus("Wrong selection. Choose player " + player + " pieces.");
+        setStatus(`Wrong selection. Now the player ${player} is walking`);
+        console.log(squaresBuff[i]);
+
+        // setSquares([...squares.filter((square) => square.id !== squaresBuff[i])]);
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        squaresBuff[i] ? delete squaresBuff[i].style.backgroundColor : null;
+        // ! squaresBuff[i] ? delete squaresBuff[i].style.backgroundColor : null;
       } else {
         squaresBuff[i].style = {
           ...squaresBuff[i].style,
           backgroundColor: "RGB(111,143,114)",
         }; // Emerald from http://omgchess.blogspot.com/2015/09/chess-board-color-schemes.html
-        setStatus("Choose destination for the selected piece");
+        setStatus("Choose where you want to go");
         setSourceSelection(i);
       }
     } else if (sourceSelection > -1) {
-      delete squaresBuff[sourceSelection].style.backgroundColor;
+      // ! delete squaresBuff[sourceSelection].style.backgroundColor;
       if (squaresBuff[i] && squaresBuff[i].player === player) {
         setStatus(
-          "Wrong selection. Choose valid source and destination again."
+          "Wrong choice. You can't make such a move."
         );
         setSourceSelection(-1);
       } else {
@@ -54,25 +57,24 @@ export default function Game() {
 
         if (isMovePossible && isMoveLegalBuff) {
           // ! Error
-          // if (squaresBuff[i] !== null) {
-          //   if (squaresBuff[i].player === 1) {
-          //     whiteFallenSoldiers.push(squaresBuff[i]);
-          //   } else {
-          //     blackFallenSoldiers.push(squaresBuff[i]);
-          //   }
-          // }
-          console.log("whiteFallenSoldiers", whiteFallenSoldiersBuff);
-          console.log("blackFallenSoldiers", blackFallenSoldiersBuff);
+          if (squaresBuff[i] !== null) {
+            console.log(squaresBuff);
+            // if (squaresBuff[i].player === 1) {
+            //   whiteFallenSoldiers.push(squaresBuff[i]);
+            // } else {
+            //   blackFallenSoldiers.push(squaresBuff[i]);
+            // }
+          }
+          // console.log("whiteFallenSoldiers", whiteFallenSoldiersBuff);
+          // console.log("blackFallenSoldiers", blackFallenSoldiersBuff);
           squaresBuff[i] = squaresBuff[sourceSelection];
           squaresBuff[sourceSelection] = null;
-          let playerBuff = player === 1 ? 2 : 1;
-          let turnBuff = turn === "white" ? "black" : "white";
 
           setStatus("");
           setSourceSelection(-1);
           setSquares(squaresBuff);
-          setPlayer(playerBuff);
-          setTurn(turnBuff);
+          setPlayer(player === 1 ? 2 : 1);
+          setTurn(turn === "white" ? "black" : "white");
 
           setWhiteFallenSoldiers(whiteFallenSoldiersBuff);
           setBlackFallenSoldiers(blackFallenSoldiersBuff);
