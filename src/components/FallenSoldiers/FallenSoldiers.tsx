@@ -1,4 +1,3 @@
-import "../../index.css";
 import Square from "../Square/Square";
 
 export default function FallenSoldierBlock({
@@ -10,13 +9,13 @@ export default function FallenSoldierBlock({
   };
 
   return (
-    <div>
-      <div className="board-row">
-        {whiteFallenSoldiers.map((ws: any) => renderSquare(ws))}
+    <>
+      <div className="fallen-soldiers__row">
+        {whiteFallenSoldiers.map((whiteFigure: any) => renderSquare(whiteFigure))}
       </div>
-      <div className="board-row">
-        {blackFallenSoldiers.map((bs: any) => renderSquare(bs))}
+      <div className="fallen-soldiers__row">
+        {blackFallenSoldiers.map((blackFigure: any) => renderSquare(blackFigure))}
       </div>
-    </div>
+    </>
   );
 }

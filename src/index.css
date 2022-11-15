@@ -44,11 +44,14 @@ ul {
 
 .game {
   display: flex;
+  justify-content: center;
   flex-direction: row;
 }
 
 .game-info {
   margin-left: 20px;
+  width: 100%;
+  max-width: 250px;
 }
 
 .icons-attribution,
@@ -82,4 +85,15 @@ li {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.game-board {
+  margin: 0;
+  padding: 0;
+  border: 3px solid black;
+}
+
+
+.fallen-soldiers__row {
+  min-height: 50px;
 }

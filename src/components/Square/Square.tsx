@@ -1,11 +1,10 @@
-import "../../index.css";
 
-export default function Square(props: any) {
+export default function Square({shade, onClick, style}: any) {
   return (
     <button
-      className={"square " + props.shade}
-      onClick={props.onClick}
-      style={props.style}
+      className={"square " + shade}
+      onClick={onClick}
+      style={style}
     ></button>
   );
 }

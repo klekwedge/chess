@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import "../../index.css";
 import Square from "../Square/Square";
 
 export default function Board({ squares, onClick }: any) {
@@ -29,8 +28,12 @@ export default function Board({ squares, onClick }: any) {
           : "dark-square";
       squareRows.push(renderSquare(i * 8 + j, squareShade));
     }
-    board.push(<li key={uuidv4()} className="board-row">{squareRows}</li>);
+    board.push(
+      <li key={uuidv4()} className="board-row">
+        {squareRows}
+      </li>
+    );
   }
 
-  return <ul>{board}</ul>;
+  return <ul className="game-board">{board}</ul>;
 }
