@@ -1,7 +1,7 @@
 import Piece from "./figure";
 
 export default class Rook extends Piece {
-  constructor(player) {
+  constructor(player: number) {
     super(
       player,
       player === 1
@@ -10,7 +10,7 @@ export default class Rook extends Piece {
     );
   }
 
-  isMovePossible(src, dest) {
+  isMovePossible(src: number, dest: number) {
     let mod = src % 8;
     let diff = 8 - mod;
     return (
@@ -18,7 +18,7 @@ export default class Rook extends Piece {
     );
   }
 
-  getSrcToDestPath(src, dest) {
+  getSrcToDestPath(src: number, dest: number) {
     let path = [],
       pathStart,
       pathEnd,
