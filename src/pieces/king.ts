@@ -1,7 +1,7 @@
 import Piece from "./figure";
 
 export default class King extends Piece {
-  constructor(player) {
+  constructor(player: number) {
     super(
       player,
       player === 1
@@ -10,7 +10,7 @@ export default class King extends Piece {
     );
   }
 
-  isMovePossible(src, dest) {
+  isMovePossible(src: number, dest: number) {
     return (
       src - 9 === dest ||
       src - 8 === dest ||
@@ -23,7 +23,7 @@ export default class King extends Piece {
     );
   }
 
-  getSrcToDestPath(src, dest) {
+  getSrcToDestPath(src: number, dest: number) {
     return [];
   }
 }
